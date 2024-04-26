@@ -6,6 +6,7 @@ const register: ModRegistrar = (moduleRegistry) => {
 
     moduleRegistry.append('Menu', load);
     moduleRegistry.append('Editor', load);
+    moduleRegistry.append('Game', load);
 }
 
 export default register;

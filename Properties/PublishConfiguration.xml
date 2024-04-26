@@ -20,7 +20,7 @@
 	<!--Thumbnail-->
 	<Thumbnail Value="Properties/Thumbnail.png" />
 	<!--Screenshot, can be set multiple times-->
-	<Screenshot Value="" />
+	<Screenshot Value="Properties/Thumbnail.png" />
 	<!--Tag, can be set multiple times-->
 	<Tag Value="" />
 	<!--Link to the forum post where the mod can be discussed-->
@@ -36,5 +36,5 @@
 	<!--ChangeLog>
 	</ChangeLog-->
 	<!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->
-	<ExternalLink Type="" Url="" />
+	<ExternalLink Type="github" Url="https://github.com/thx114/I18nCN_pmod" />
 </Publish>

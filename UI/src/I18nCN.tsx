@@ -13,7 +13,6 @@ export const load = ()=>{
     }
 
     function I18nCN() {
-        console.log("全局汉化 开始...",Date.now())
         const textReplaceItems = [Editor,DeveloperMode]
         for (const textReplaceItems_Ritem of textReplaceItems) {
             const Ritem = textReplaceItems_Ritem.replace()
@@ -23,23 +22,19 @@ export const load = ()=>{
             }
         }
         }
-        console.log("全局汉化 结束",Date.now())
     }
 
     // 全局鼠标左键监听
     document.body.addEventListener("mousedown", async (e) => {
-        console.log(e.button)
         if (e.button != 0) return
         await delay(100)
         I18nCN()
-
         return null
     })
 
         document.body.addEventListener("keydown", async (e) => {
         await delay(100)
         I18nCN()
-
         return null
     })
 
