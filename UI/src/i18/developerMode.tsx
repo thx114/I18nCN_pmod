@@ -1,24 +1,81 @@
-﻿import { RE, rif } from '../RIF'
+﻿import { RE, rif, on, I18 } from '../RIF'
+
 
 export const DeveloperMode = {
-    replace: () => {
-        const 开发者模式 = {
-            顶栏: {
-                按钮: rif().class('tab-bar_b_c').class('button_BNH').fontCN
+    tab: {
+        replace: () => {
+            if (!on.Debug) { return }
+
+            const buttonClick = (i: any) => {
+                i.addEventListener('mouseup',  () => {
+                    setTimeout(() => I18(['DeveloperMode.main']), 100)
+                })
+            }
+
+            const 按钮 = rif({ afterFunc: [buttonClick] }).class('tab-bar_b_c').class('button_BNH').fontCN
+
+
+
+            return RE(
+                [按钮], {
+                'Display Stats': '显示数据',
+                'Thumbnails': '缩略图',
+                'Asset database': '数据',
+                'Notifications': '通知',
+                'ECS Components': 'ECS 组件',
+                'Scene Flow': '场景流程',
+                'GameRendering': '游戏渲染',
+                'Gameplay': '游戏玩法',
+                'Localization': '本地化',
+                'UI Bindings': 'UI 绑定',
+                'Watches': '监视器',
+                'Radio': '无线电',
+                'Climate': '气候',
+                'Simulation': '模拟',
+                'Pathfind': '寻路',
+                'Serialization': '序列化',
+                'Gizmos': '工具',
+                'Camera': '摄像机',
+                'Input': '输入',
+                'Decals': '标贴',
+                'Material': '材质',
+                'Lighting': '光照',
+                'Rendering': '渲染',
+                'Profiler Metrics': '性能分析指标',
+                'Main Camera': '主摄像机',
+                'Virtual Texturing': '虚拟纹理',
+                'Volume': '音量',
             },
 
-            内容: {
-                标签: rif().class('content_gqa').class('label_KyX').fontCN,
-                按钮: rif().class('content_gqa').class('button_k8s').fontCN,
-                标题: rif().class('content_gqa').class('title_Xkf').fontCN,
-                值: rif().class('content_gqa').class('value_fMT').fontCN,
-                折叠: rif().class('content_gqa').class('label_qS_').fontCN,
-                控制值: rif().class('content_gqa').class('control_b3l').fontCN,
-            }
+            )
         }
-        return {
-            开发者模式_模拟: RE(
-                [开发者模式.内容.标签], {
+    },
+    main: {
+        replace: () => {
+            if (!on.Debug) { return }
+
+            const buttonClick = (i: any) => {
+                i.addEventListener('mouseup', () => {
+                    setTimeout(() => I18(['DeveloperMode.main']), 60)
+                })
+            }
+
+            const buttonClick2 = (i: any) => {
+                i.parentElement.addEventListener('mouseup', () => {
+                    setTimeout(() => I18(['DeveloperMode.main']), 60)
+                })
+            }
+
+            const 标签 = rif().class('content_gqa').class('label_KyX').fontCN
+            const 按钮 = rif({ afterFunc: [buttonClick] }).class('content_gqa').class('button_k8s').fontCN
+            const 标题 = rif().class('content_gqa').class('title_Xkf').fontCN
+            const 值 = rif().class('content_gqa').class('value_fMT').fontCN
+            const 折叠 = rif({ afterFunc: [buttonClick2] }).class('content_gqa').class('label_qS_').fontCN
+            const 控制值 = rif().class('content_gqa').class('control_b3l').fontCN
+            const 切换 = rif({ afterFunc: [buttonClick] }).class('content_gqa').class('button__Wn').fontCN
+
+            return RE(
+                [标签], {
                 'Active tool': '激活工具',
                 'Selected': '选中',
                 'Taxi Starting Fee': '出租车起步价',
@@ -54,7 +111,7 @@ export const DeveloperMode = {
                 'Water grid size': '水格大小',
                 'Flow number of Downscale': '流动降阶数量',
                 'Blur flow': '流动模糊',
-                'Enable flow Dounscale': '启用流动降阶',
+                'Enable flow Downscale': '启用流动降阶',
                 'Flow limiter for render': '流动渲染限制器',
                 'Max Water Flow Length for render': '最大渲染水流长度',
                 'Water Flow Render Multiplier': '水流渲染倍增',
@@ -126,14 +183,14 @@ export const DeveloperMode = {
                 'Snap cell length': '对齐单元格长度',
 
             },
-                [开发者模式.内容.标题], {
+                [标题], {
                 'Climate time': '气候时间',
                 'Temperature': '温度',
                 'Precipitation': '降水',
                 'Cloudiness': '云',
                 'Aurora': '极光'
             },
-                [开发者模式.内容.按钮], {
+                [按钮], {
                 'Save game': '保存游戏',
                 'Load game': '加载游戏',
                 'Remove residents/vehicles': '移除居民/车辆',
@@ -202,7 +259,7 @@ export const DeveloperMode = {
                 'Reset Wind': '重置风',
                 'Select next': '选择下一个',
             },
-                [开发者模式.内容.值], {
+                [值], {
                 'Default Tool': '默认工具',
                 'Area Tool': '区域工具',
                 'Bulldoze Tool': '推土机',
@@ -216,7 +273,7 @@ export const DeveloperMode = {
                 'Marquee': '滚动',
                 'Paint': '涂刷'
             },
-                [开发者模式.内容.折叠], {
+                [折叠], {
                 'Policies': '政策',
                 'Diversity': '多样性',
                 'Water': '水',
@@ -232,7 +289,7 @@ export const DeveloperMode = {
                 'Season stats': '季节统计',
                 'Temperature stats': '温度统计'
             },
-                [开发者模式.内容.控制值], {
+                [控制值], {
                 'Atmosphere1Prefab': '大气层1预制体',
                 'GrasslandBiomePrefab': '草原生态群落预制体',
                 'SeasonSummer': '夏季季节',
@@ -267,10 +324,8 @@ export const DeveloperMode = {
                 'Oil Surface 01': '石油地面',
                 'Ore Surface 01': '矿石地面',
                 'Landfill Site Lot': '垃圾填埋场区域',
-            }
-            ),
-            开发者模式_游戏玩法: RE(
-                [开发者模式.内容.标签], {
+            },
+                [标签], {
                 'Tutorials enabled': '启用教程',
                 'Freeze tutorials': '冻结教程',
                 'Active tutorial list': '当前教程列表',
@@ -289,7 +344,7 @@ export const DeveloperMode = {
                 'Electricity fee': '电费',
                 'Public transport fee': '公共交通费'
             },
-                [开发者模式.内容.按钮], {
+                [按钮], {
                 'Skip tutorial phase': '跳过教程阶段',
                 'Show all tutorials in advisor': '在顾问中显示所有教程',
                 'Skip active tutorial list': '跳过当前教程列表',
@@ -299,13 +354,11 @@ export const DeveloperMode = {
                 'Next MS': '下一个MS',
                 'Get 500k money': '获得500,000钱',
             },
-                [开发者模式.内容.控制值], {
+                [控制值], {
                 'North American': '北美',
                 'European': '欧洲'
-            }
-            ),
-            开发者模式_渲染: RE(
-                [开发者模式.内容.标签], {
+            },
+                [标签], {
                 'Fullscreen Debug Mode': '全屏调试模式',
                 'Max Overdraw Count': '最大过度绘制计数',
                 'Max Quad Cost': '最大四边形成本',
@@ -330,11 +383,11 @@ export const DeveloperMode = {
                 'Immediate Mode': '即时模式',
                 'Enable Logging': '启用日志记录',
             },
-                [开发者模式.内容.值], {
+                [值], {
                 'Control': '控制',
                 'No Visible Camera': '无可见摄像头'
             },
-                [开发者模式.内容.标题], {
+                [标题], {
                 'Color Monitors': '色彩监视器',
                 '#WaveformContainer': '波形容器',
                 '#VectorscopeContainer': '矢量范围容器',
@@ -346,13 +399,11 @@ export const DeveloperMode = {
                 'Output resolution': '输出分辨率',
                 'Quality': '质量',
             },
-                [开发者模式.内容.按钮], {
+                [按钮], {
                 'Log Frame Information': '记录帧信息',
                 'Log Resources': '记录资源'
             },
-            ),
-            开发者模式_游戏渲染: RE(
-                [开发者模式.内容.标签], {
+                [标签], {
                 'Texture Debug Mode': '纹理调试模式',
                 'Entity culling': '实体剔除',
                 'Effect culling': '效果剔除',
@@ -425,26 +476,24 @@ export const DeveloperMode = {
 
                 'Scale': '渲染精度'
             },
-                [开发者模式.内容.值], {
+                [值], {
                 'Catmull Rom': 'Catmull-Rom',
             },
-                [开发者模式.内容.按钮], {
+                [按钮], {
                 'Refresh splatmap': '刷新地表纹理图',
             },
-                [开发者模式.内容.折叠], {
+                [折叠], {
                 'Scale': '缩放',
                 'Shaders': '着色器',
                 'Custom passes': '自定义通道',
             },
-                [开发者模式.内容.控制值], {
+                [控制值], {
                 'Scale': '渲染精度',
                 'Unknown': '未知',
                 'False': '否',
                 'BeforePost': '后处理前'
-            }
-            ),
-            开发者模式_工具: RE(
-                [开发者模式.内容.标签], {
+            },
+                [标签], {
                 'Physical Objects': '物理对象',
                 'Marker Objects': '标记对象',
                 'Interpolated Positions': '插值位置',
@@ -560,6 +609,7 @@ export const DeveloperMode = {
                 'Land value (Edge)': '隐藏地价',
                 'Strict': '严格模式',
                 'Buildable Area': '可建造区域',
+                'Overpopulated':'人口过剩 调试系统',
 
                 'Object Debug System': '物件 调试系统',
                 'Net Debug System': '道路 调试系统',
@@ -591,12 +641,10 @@ export const DeveloperMode = {
                 'Event Debug System': '事件 调试系统',
                 'Buildable Area Debug System': '可建造区域 调试系统'
             },
-                [rif({ func: [(i: any) => { i.style.color = 'red' }] }).class('content_gqa').class('label_KyX').fontCN], {
+                [rif({ afterFunc: [(i: any) => { i.style.color = '#111111' }] }).class('content_gqa').class('label_KyX').fontCN], {
                 'Tradecost Debug System': '(危险) 贸易成本 调试系统'
-            }
-            ),
-            开发者模式_main: RE(
-                [开发者模式.顶栏.按钮], {
+            },
+                [按钮], {
                 'Display Stats': '显示数据',
                 'Thumbnails': '缩略图',
                 'Asset database': '数据',
@@ -625,23 +673,37 @@ export const DeveloperMode = {
                 'Virtual Texturing': '虚拟纹理',
                 'Volume': '音量',
             },
-                [开发者模式.内容.标签], {
+                [标签], {
                 'Fullscreen Debug': '全屏调试'
             },
-                [开发者模式.内容.值], {
+                [值], {
                 'None': '无',
             },
-                [rif({ func: [(i: any) => { i.style.color = '#8B0000' }] }).class('content_gqa').class('value_fMT').fontCN], {
+                [rif({ afterFunc: [(i: any) => { i.style.color = '#8B0000' }] }).class('content_gqa').class('value_fMT').fontCN], {
                 'Disabled': '关闭'
             },
-                [rif({ func: [(i: any) => { i.style.color = 'green' }] }).class('content_gqa').class('value_fMT').fontCN], {
+                [rif({ afterFunc: [(i: any) => { i.style.color = 'green' }] }).class('content_gqa').class('value_fMT').fontCN], {
                 'Enabled': '开启'
+            },
+            [切换],{
+                '<':' <',
+                '>':' >',
+            },
+            [标题],{
+                'Objects lighting state':'物体光照状态',
+                'Infoviews':'信息视图',
             }
-
             )
         }
-
-
+    },
+    KeyEvent: {
+        Tab: () => {
+            on.Target(
+                () => true,
+                () => on.Debug,
+                () => I18(['DeveloperMode.tab', 'DeveloperMode.main']),
+                500
+            )
+        }
     }
 }
-

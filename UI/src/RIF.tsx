@@ -1,6 +1,9 @@
+import { event } from "cs2/bindings"
+
 interface rifSettings {
     match: 'full' | 'inc'
     mode: 'text' | 'html'
+    replaceMode: 'full' | 'inc'
     afterFunc: Function[]
 }
 
@@ -20,24 +23,26 @@ export const setNativeValue = function setNativeValue(element: Element, value: a
 export class RIF {
     match: 'full' | 'inc' = `full`
     replaceMode: 'full' | 'inc' = `full`
-    repalceFunc : Function[] = []
+    repalceFunc: Function[] = []
     mode: 'text' | 'html' = `text`
     __state: string = 'selected'
     afterFunc: Function[] = []
     items: Element[] = [document.body]
     private _state: Function = (e: Element) => (e.classList.contains(this.__state))
-    static Match(str:string,replaceMatch:'inc'| `full`, rString:string) {
+    static Match(str: string, replaceMatch: 'inc' | `full`, rString: string) {
         return ((replaceMatch === 'full' && str === rString) || (replaceMatch === 'inc' && str.includes(rString)) || false)
     }
 
-    constructor(settings: rifSettings | Element | Element[] | RIF = { match: 'full', mode: 'text', afterFunc: [] }) {
+    constructor(settings: rifSettings | Element | Element[] | RIF = { match: 'full', mode: 'text', replaceMode: 'inc', afterFunc: [] }) {
         if (settings instanceof Element) { this.items = [settings] }
         else if (settings instanceof Array) { this.items = settings }
         else if (settings instanceof RIF) { this.items = settings.items }
-        else{
-        this.match = settings.match ? settings.match : this.match
-        this.mode = settings.mode ? settings.mode : this.mode
-        this.afterFunc = settings.afterFunc || []
+        else {
+            this.match = settings.match ? settings.match : this.match
+            if (this.match === 'inc') { this.replaceMode = 'inc' }
+            this.replaceMode = settings.replaceMode ? settings.replaceMode : this.replaceMode
+            this.mode = settings.mode ? settings.mode : this.mode
+            this.repalceFunc = settings.afterFunc || []
         }
     }
     get all() {
@@ -89,7 +94,7 @@ export class RIF {
     }
     hasHtml(html: string | string[]) {
         this.items = this.items.filter((item) => {
-            switch (typeof html){
+            switch (typeof html) {
                 case 'string':
                     return item.innerHTML.includes(html)
                 case 'object':
@@ -122,9 +127,9 @@ export class RIF {
             .map(item => item.children[index]);
         return this
     }
-    state = (state: string = 'selected',func: Function | null  = null)=>{
+    state = (state: string = 'selected', func: Function | null = null) => {
         this.__state = state
-        this._state = func? func: (e: Element)=>e.classList.contains(this.__state)
+        this._state = func ? func : (e: Element) => e.classList.contains(this.__state)
         return this
     }
 
@@ -148,13 +153,13 @@ export class RIF {
     }
     get enable() {
         this.items.forEach(item => {
-            if (!this._state(item,this._state)) { this.click }
+            if (!this._state(item, this._state)) { this.click }
         })
         return this
     }
     get disable() {
         this.items.forEach(item => {
-            if (this._state(item,this._state)) { this.click }
+            if (this._state(item, this._state)) { this.click }
         })
         return this
     }
@@ -166,8 +171,8 @@ export class RIF {
         return this
     }
     get item() { return this.items[0] }
-    getItems(items:number[]):RIF[]{
-        return this.items.filter((item,i)=>items.includes(i)).map(item=>new RIF(item))
+    getItems(items: number[]): RIF[] {
+        return this.items.filter((item, i) => items.includes(i)).map(item => new RIF(item))
     }
     setValue(value: string) {
         this.items.forEach(item => {
@@ -175,15 +180,15 @@ export class RIF {
         })
         return this
     }
-    REPLACE = async (replaceObject: object) => {
+    REPLACE = (replaceObject: object) => {
         let mode = (
             (this.mode === 'html') ? 'innerHTML' :
-            (this.mode === 'text') ? 'textContent' :
-            'error'
+                (this.mode === 'text') ? 'textContent' :
+                    'error'
         )
-        if (mode == 'error') { console.log('mode����:', this.mode) }
+        if (mode == 'error') { console.error('mode 错误:', this.mode) }
 
-        for await (const [key, value] of Object.entries(replaceObject)) {
+        for (const [key, value] of Object.entries(replaceObject)) {
             for (const item of this.items) {
                 const Rstr = item as any
 
@@ -191,7 +196,6 @@ export class RIF {
                     if (this.match === 'full') {
                         Rstr[mode] = value
                     } else if (this.match === 'inc') {
-                        console.log(Rstr.textContent,value,this.replaceMode)
                         if (this.replaceMode == 'full') { Rstr[mode] = value } else {
                             Rstr[mode] = Rstr[mode].replace(new RegExp(`${key}`, 'g'), value)
                         }
@@ -202,7 +206,7 @@ export class RIF {
         }
     }
     get fontCN() {
-        this.repalceFunc.push((div:any) => {
+        this.repalceFunc.push((div: any) => {
             div.style.fontFamily = "Noto Sans SC"
         })
         return this
@@ -241,13 +245,13 @@ export const Fsytle = (Element: any, sytle: string) => {
     return Number(window.getComputedStyle(Element).getPropertyValue(sytle))
 }
 
-export const Click = (item: any,returnFunc=false):undefined|{reactItem: any,prop: string,onClickMethod: Function} => {
+export const Click = (item: any, returnFunc = false): undefined | { reactItem: any, prop: string, onClickMethod: Function } => {
     const allProps = Object.keys(item);
     for (const prop of allProps) {
         if (typeof prop === 'string' && prop.startsWith('__reactProps')) {
             const onClickMethod = (item as any)[prop]?.onClick;
             if (typeof onClickMethod === 'function') {
-                if (returnFunc) { return {reactItem: item,prop: prop,onClickMethod: onClickMethod} }
+                if (returnFunc) { return { reactItem: item, prop: prop, onClickMethod: onClickMethod } }
                 try {
                     onClickMethod({ stopPropagation: () => { } });
                 } catch (error) {
@@ -262,9 +266,35 @@ export const Click = (item: any,returnFunc=false):undefined|{reactItem: any,prop
 
 export const WINODW = (window as any)
 export const on = {
-    get Game(){return Boolean(document.body.querySelector('.game-main-screen_TRK'))},
-    get Editor(){return Boolean(document.body.querySelector('.editor-main-screen_m89'))},
-    get Menu(){return Boolean(document.body.querySelector('.menu-ui_I8X'))}
+    get Game() { return Boolean(document.body.querySelector('.game-main-screen_TRK')) },
+    get Editor() { return Boolean(document.body.querySelector('.editor-main-screen_m89')) },
+    get Menu() { return Boolean(document.body.querySelector('.menu-ui_I8X')) },
+    get Settings() { return Boolean(document.body.querySelector('.option-page_CW8')) },
+    get Debug() { return Boolean(document.body.querySelector('.debug-ui_M_y')) },
+    Target: async (TargetCondition:Function,Condition:Function,Callback:Function,Delay=100,Times=10) => {
+        await delay(10)
+        if (TargetCondition()) {
+            let times = 0
+            while (!Condition() && Times < 10) {
+                await delay(100)
+                times + 1
+            }
+            await delay(Delay)
+            Callback()
+        }
+    },
+}
+
+
+
+export function I18(...args:any) {
+    (window as any).i18(...args)
+}
+
+export const win = {
+    get target() {
+        return (window as any).I18nCN.target
+    }
 }
 
 

@@ -1,6 +1,6 @@
 ﻿<Publish>
 	<!--Id must be set in order to update existed mod. it is not required for publishing mod for the first time-->
-	<ModId Value="" />
+	<ModId Value="79589" />
 	<!--Name of the mod to display to players-->
 	<DisplayName Value="全局汉化 Chinese Loc I18nCN" />
 	<!--Short description of the mod-->
@@ -11,11 +11,16 @@
 # 全局汉化 I18nCN
 
 ## 汉化内容
-
-### 替换文本:
-(部分模组或内容没有本地化适配，可使用直接替换文本汉化)
 - **编辑器** Editor
 - **开发者模式** developerMode （部分汉化）
+- **Move It**
+- **道路名称移除**
+- **人口过剩工具**
+- **资产管理器**
+- **无碰撞**
+- **第一人称视角**
+- **原版** （部分汉化修补）
+
 	</LongDescription>
 	<!--Thumbnail-->
 	<Thumbnail Value="Properties/Thumbnail.png" />
@@ -26,13 +31,13 @@
 	<!--Link to the forum post where the mod can be discussed-->
 	<ForumLink Value="" />
 	<!--Version of the mod-->
-	<ModVersion Value="1.0" />
+	<ModVersion Value="1.1" />
 	<!--Recommended version of the base game to use the mod-->
-	<GameVersion Value="1.0.*" />
+	<GameVersion Value="1.1.*" />
 	<!--Dependency for the mod, can be set multiple times-->
 	<Dependency Id="" />
 	<!--Change log for new version. Single line or multi line. Supports minimal markdown subset-->
-	<ChangeLog Value="" />
+	<ChangeLog Value="重写部分代码，改善性能和响应速度，增加模组汉化" />
 	<!--ChangeLog>
 	</ChangeLog-->
 	<!--External link. supported types are discord, github, youtube, twitch, x, paypal, patreon-->

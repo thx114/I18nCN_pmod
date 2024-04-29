@@ -1,7 +1,10 @@
-﻿import { RE, rif } from '../RIF'
+﻿import { RE, rif, on, I18, delay } from '../RIF'
 
 export const Editor = {
     replace: () => {
+
+        if (!on.Editor) { return }
+
         const 编辑器 = {
             通用: [
                 rif().class('content_yeu').class('header-label_H79'),
@@ -42,7 +45,7 @@ export const Editor = {
             ]
 
         }
-        return {编辑器:RE(
+        return RE(
             编辑器.通用, {
             'Building Prefab': '建筑资产',
             'Meshes': '网格',
@@ -490,7 +493,7 @@ export const Editor = {
             'Net Pollution': '道路污染',
             'Noise Pollution Factor': '噪音污染因子',
             'Air Pollution Factor': '空气污染因子',
-            'Underground Net Sections': '地下网络部分',
+            'Underground Net Sections': '地下道路部分',
             'Unlock On Build': '依赖建筑解锁',
             'Deathcare Facility': '丧葬设施',
             'Hearse Capacity': '救护车容量',
@@ -716,7 +719,7 @@ export const Editor = {
             'Hovering Object': '悬浮物体',
             'Lane Block': '车道阻塞',
             'Lane Direction Object': '车道方向对象',
-            'Net Object': '网络对象',
+            'Net Object': '道路对象',
             'Outside Connection': '外部连接',
             'Pillar Object': '柱状物体',
             'Placeholder Object': '占位对象',
@@ -1019,7 +1022,7 @@ export const Editor = {
             'Net Upgrade': '道路升级',
             'Overhead Net Sections': '车道覆盖',
             'Fixed Index': '固定索引',
-            'Net': '网络',
+            'Net': '道路',
             'Unset State': '未设置状态',
             'Ambulance': '救护车',
             'Car Tractor': '车载拖拉机',
@@ -1255,12 +1258,9 @@ export const Editor = {
             'Pet': '宠物',
             'Swimming Animal': '水生动物',
             'Wildlife': '野生动物'
-        },
+        }
 
-
-
-
-            编辑器.通用inc, {
+            , 编辑器.通用inc, {
             'Element ': '元素',
             'EU_ChimneyStyle0': '欧洲烟囱风格0',
             'EU_FenceResidentialPieceStyle0': '欧洲住宅围栏块风格0',
@@ -1295,9 +1295,14 @@ export const Editor = {
             'Traffic Lights': '交通信号灯',
             'Service Object': '服务对象',
             'Service': '服务',
-
         }
-        )}
+        )
+    },
+    MouseEvent: async() => {
+        console.log('Editor')
+        if (!on.Editor) { return }
+        await delay(400)
+        I18(['Editor'])
     }
 }
 

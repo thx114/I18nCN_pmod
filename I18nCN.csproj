@@ -83,8 +83,4 @@
 		<None Include="$(ModTargetsFile)" Link="Properties\Mod.targets" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <Folder Include="UI\src\i18\" />
-	</ItemGroup>
-
 </Project>
